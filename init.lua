@@ -593,4 +593,4 @@ vim.keymap.set('n', '<leader>ds', '<cmd>!docker compose down<cr>', { desc = '[D]
 vim.keymap.set('n', '<leader>ga', '<cmd>!git add .<cr>', { desc = '[G]it add [a]ll' })
 vim.keymap.set('n', '<leader>gs', '<cmd>new | :term git status<cr>', { desc = '[G]it [s]atus' })
 vim.keymap.set('n', '<leader>gl', '<cmd>new | :term git log<cr>', { desc = '[G]it [l]log' })
-vim.keymap.set('n', '<leader>gp', '<cmd>new | :term git push origin head<cr>', { desc = '[G]it [l]log' })
+vim.keymap.set('n', '<leader>gp', '<cmd>new | :term git push origin head<cr>', { desc = '[G]it [p]ush' })
