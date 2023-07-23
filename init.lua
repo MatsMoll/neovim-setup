@@ -124,7 +124,7 @@ require('lazy').setup({
       on_attach = function(bufnr)
         vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk, { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
         vim.keymap.set('n', '<leader>gn', require('gitsigns').next_hunk, { buffer = bufnr, desc = '[G]o to [N]ext Hunk' })
-        vim.keymap.set('n', '<leader>ph', require('gitsigns').preview_hunk, { buffer = bufnr, desc = '[P]review [H]unk' })
+        vim.keymap.set('n', '<leader>gp', require('gitsigns').preview_hunk, { buffer = bufnr, desc = '[P]review [H]unk' })
       end,
     },
   },
@@ -593,4 +593,4 @@ vim.keymap.set('n', '<leader>ds', '<cmd>!docker compose down<cr>', { desc = '[D]
 vim.keymap.set('n', '<leader>ga', '<cmd>!git add .<cr>', { desc = '[G]it add [a]ll' })
 vim.keymap.set('n', '<leader>gs', '<cmd>new | :term git status<cr>', { desc = '[G]it [s]atus' })
 vim.keymap.set('n', '<leader>gl', '<cmd>new | :term git log<cr>', { desc = '[G]it [l]log' })
-vim.keymap.set('n', '<leader>gp', '<cmd>new | :term git push origin head<cr>', { desc = '[G]it [p]ush' })
+vim.keymap.set('n', '<leader>gop', '<cmd>new | :term git push origin head<cr>', { desc = '[G]it [o]rigin [p]ush' })
