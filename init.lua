@@ -191,6 +191,13 @@ require('lazy').setup({
     build = ':TSUpdate',
   },
 
+  {
+    'mfussenegger/nvim-dap'
+  },
+  {
+    'mfussenegger/nvim-dap-python'
+  }
+
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
@@ -221,7 +228,7 @@ vim.o.mouse = 'a'
 
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
---  See `:help 'clipboard'`
+--  See `:help 'clipboard
 vim.o.clipboard = 'unnamedplus'
 
 vim.o.relativenumber = true
@@ -270,6 +277,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
+
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
@@ -546,3 +554,43 @@ cmp.setup {
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+
+-- dap
+vim.keymap.set('n', '<leader>db', require('dap').toggle_breakpoint, { desc = '[D]ebug [b]reakpoint' })
+vim.keymap.set('n', '<leader>dc', require('dap').continue, { desc = '[D]ebug [c]ontinue' })
+vim.keymap.set('n', '<leader>di', require('dap').step_into, { desc = '[D]ebug [i]nto' })
+vim.keymap.set('n', '<leader>dn', require('dap').step_over, { desc = '[D]ebug [n]ext line' })
+vim.keymap.set('n', '<leader>dr', require('dap').repl.open, { desc = '[D]ebug [r]epl' })
+vim.keymap.set('n', '<leader>tl', require('dap').run_last, { desc = '[T]est [L]ast' })
+
+-- dap Python
+require('dap-python').setup(get_python_path('.'))
+require('dap-python').test_runner = 'pytest'
+
+local function trigger_python_test(test_path)
+   local config = {
+    type = 'python',
+    request = 'launch',
+    module = 'pytest',
+    console = 'integratedTerminal'
+  }
+  if (test_path) then
+    config.args = {'-s', test_path}
+  end
+  require('dap').run(config, {})
+end
+
+vim.keymap.set('n', '<leader>tm', require('dap-python').test_method, { desc = '[T]est python [m]ethod' })
+vim.keymap.set('n', '<leader>tc', require('dap-python').test_class, { desc = '[T]est python [c]lass' })
+vim.keymap.set('n', '<leader>tf', function() trigger_python_test(vim.fn.expand('%:p')) end, { desc = '[T]est python [F]ile' })
+vim.keymap.set('n', '<leader>ta', function() trigger_python_test(nil) end, { desc = '[T]est python [A]ll' })
+
+-- Docker
+vim.keymap.set('n', '<leader>du', '<cmd>new | :term docker compose up<cr>', { desc = '[D]ocker Compose [U]p' })
+vim.keymap.set('n', '<leader>ds', '<cmd>!docker compose down<cr>', { desc = '[D]ocker Compose [D]own' })
+
+-- Git
+vim.keymap.set('n', '<leader>ga', '<cmd>!git add .<cr>', { desc = '[G]it add [a]ll' })
+vim.keymap.set('n', '<leader>gs', '<cmd>new | :term git status<cr>', { desc = '[G]it [s]atus' })
+vim.keymap.set('n', '<leader>gl', '<cmd>new | :term git log<cr>', { desc = '[G]it [l]log' })
+vim.keymap.set('n', '<leader>gp', '<cmd>new | :term git push origin head<cr>', { desc = '[G]it [l]log' })
