@@ -149,6 +149,9 @@ require('lazy').setup({
         component_separators = '|',
         section_separators = '',
       },
+      sections = {
+        lualine_c = { { 'filename', path = 1 } }
+      }
     },
   },
 
@@ -196,7 +199,14 @@ require('lazy').setup({
   },
   {
     'mfussenegger/nvim-dap-python'
-  }
+  },
+  {
+    'meatballs/notebook.nvim'
+  },
+  -- {
+  --   'krivahtoo/silicon.nvim',
+  --   build = './install.sh build'
+  -- }
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
@@ -290,6 +300,11 @@ require('telescope').setup {
       },
     },
   },
+  pickers = {
+    find_files = {
+      find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*" },
+    }
+  }
 }
 
 -- Enable telescope fzf native, if installed
@@ -438,7 +453,7 @@ end
 local servers = {
   -- clangd = {},
   -- gopls = {},
-  -- pyright = {},
+  -- pyright = { },
   -- rust_analyzer = {},
   -- tsserver = {},
 
@@ -499,6 +514,8 @@ local function get_python_path(workspace)
 end
 
 require('lspconfig').pyright.setup({
+  capabilities = capabilities,
+  on_attach = on_attach,
   before_init = function(_, config)
     config.settings.python.pythonPath = get_python_path(config.root_dir)
   end
@@ -572,7 +589,8 @@ local function trigger_python_test(test_path)
     type = 'python',
     request = 'launch',
     module = 'pytest',
-    console = 'integratedTerminal'
+    console = 'integratedTerminal',
+    pythonPath = get_python_path(vim.fn.expand('%:p'))
   }
   if (test_path) then
     config.args = {'-s', test_path}
@@ -594,3 +612,6 @@ vim.keymap.set('n', '<leader>ga', '<cmd>!git add .<cr>', { desc = '[G]it add [a]
 vim.keymap.set('n', '<leader>gs', '<cmd>new | :term git status<cr>', { desc = '[G]it [s]atus' })
 vim.keymap.set('n', '<leader>gl', '<cmd>new | :term git log<cr>', { desc = '[G]it [l]log' })
 vim.keymap.set('n', '<leader>gop', '<cmd>new | :term git push origin head<cr>', { desc = '[G]it [o]rigin [p]ush' })
+
+-- Ipynb
+require("notebook")
