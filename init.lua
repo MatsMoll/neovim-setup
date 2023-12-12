@@ -659,10 +659,25 @@ else
     require('dap').run(config, {})
   end
 
+  local function trigger_python_debug(run_path)
+
+
+    local config = {
+      type = 'python',
+      request = 'launch',
+      module =  run_path:gsub('.py', ''):gsub('/', '.'),
+      console = 'integratedTerminal',
+      pythonPath = get_python_path(vim.fn.expand('%:p'))
+    }
+
+    require('dap').run(config, {})
+  end
+
   vim.keymap.set('n', '<leader>tm', require('dap-python').test_method, { desc = '[T]est python [m]ethod' })
   vim.keymap.set('n', '<leader>tc', require('dap-python').test_class, { desc = '[T]est python [c]lass' })
   vim.keymap.set('n', '<leader>tf', function() trigger_python_test(vim.fn.expand('%:p')) end, { desc = '[T]est python [F]ile' })
   vim.keymap.set('n', '<leader>ta', function() trigger_python_test(nil) end, { desc = '[T]est python [A]ll' })
+  vim.keymap.set('n', '<leader>df', function() trigger_python_debug(vim.fn.expand('%')) end, { desc = '[D]ebug [f]ile' })
 
   -- Docker
   vim.keymap.set('n', '<leader>du', '<cmd>!docker compose up<cr>', { desc = '[D]ocker Compose [U]p' })
