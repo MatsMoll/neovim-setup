@@ -659,8 +659,20 @@ else
     require('dap').run(config, {})
   end
 
-  local function trigger_python_debug(run_path)
+  local function trigger_debug_streamlit(run_path)
 
+    local config = {
+      type = 'python',
+      request = 'launch',
+      module =  'streamlit',
+      console = 'integratedTerminal',
+      pythonPath = get_python_path(vim.fn.expand('%:p'))
+    }
+    config.args = {'run', run_path}
+    require('dap').run(config, {})
+  end
+
+  local function trigger_python_debug(run_path)
 
     local config = {
       type = 'python',
@@ -678,6 +690,7 @@ else
   vim.keymap.set('n', '<leader>tf', function() trigger_python_test(vim.fn.expand('%:p')) end, { desc = '[T]est python [F]ile' })
   vim.keymap.set('n', '<leader>ta', function() trigger_python_test(nil) end, { desc = '[T]est python [A]ll' })
   vim.keymap.set('n', '<leader>df', function() trigger_python_debug(vim.fn.expand('%')) end, { desc = '[D]ebug [f]ile' })
+  vim.keymap.set('n', '<leader>dl', function() trigger_debug_streamlit(vim.fn.expand('%')) end, { desc = '[D]ebug stream[l]it file' })
 
   -- Docker
   vim.keymap.set('n', '<leader>du', '<cmd>!docker compose up<cr>', { desc = '[D]ocker Compose [U]p' })
